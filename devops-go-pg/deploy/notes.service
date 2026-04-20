@@ -1,0 +1,18 @@
+[Unit]
+Description=Notes Backend Service (Go + PostgreSQL)
+After=network.target postgresql.service
+Wants=postgresql.service
+[Service]
+Type=simple
+User=yamata
+WorkingDirectory=/home/yamata/devops-go-pg/backend
+EnvironmentFile=/etc/notes/backend.env
+ExecStartPre=/usr/bin/pg_isready -U ${DB_USER} -d ${DB_NAME} -h ${DB_HOST} -t 30
+ExecStart=/home/yamata/devops-go-pg/backend/notes-server
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+WatchdogSec=30s
+Restart=always
+[Install]
+WantedBy=multi-user.target

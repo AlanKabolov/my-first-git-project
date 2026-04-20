@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Заметки (Go + PostgreSQL)</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        textarea { width: 100%; height: 80px; margin-bottom: 10px; }
+        button { padding: 8px 16px; }
+        .note { border: 1px solid #ccc; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .note small { color: #666; }
+    </style>
+</head>
+<body>
+    <h1>Мои заметки</h1>
+    
+    <textarea id="noteInput" placeholder="Введите текст заметки..."></textarea>
+    <button onclick="addNote()">Добавить заметку</button>
+
+    <div id="notesList"></div>
+
+    <script>
+       const API_URL = '/notes'; 
+
+        async function loadNotes() {
+            try {
+                const response = await fetch(API_URL);
+                const notes = await response.json();
+                const container = document.getElementById('notesList');
+                container.innerHTML = notes.map(note => `
+                    <div class="note">
+                        <p>${escapeHtml(note.content)}</p>
+                        <small>${new Date(note.created_at).toLocaleString()}</small>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Ошибка загрузки заметок:', err);
+            }
+        }
+
+        async function addNote() {
+            const input = document.getElementById('noteInput');
+            const content = input.value.trim();
+            if (!content) return;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content })
+                });
+                if (response.ok) {
+                    input.value = '';
+                    loadNotes();
+                }
+            } catch (err) {
+                console.error('Ошибка добавления заметки:', err);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Загружаем заметки при открытии страницы
+        loadNotes();
+    </script>
+</body>
+</html>
