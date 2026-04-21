@@ -1,0 +1,14 @@
+# 1. Start from a small Linux with Go pre-installed
+FROM golang:1.26.2-alpine AS builder
+WORKDIR /app
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
+COPY /backend/ .
+RUN go build -o notes-backend .
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /app/notes-backend .
+EXPOSE 8080
+CMD ["./notes-backend"]
