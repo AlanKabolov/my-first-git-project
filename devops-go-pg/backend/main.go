@@ -9,6 +9,7 @@ import (
         "os"
 	"fmt"
         "github.com/coreos/go-systemd/v22/daemon"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	_ "github.com/lib/pq"
 )
@@ -119,6 +120,8 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 func main() {
 	initDB()
 	defer db.Close()
+         
+	http.Handle("/metrics", promhttp.Handler())
 
 	http.HandleFunc("/notes", enableCORS(func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
