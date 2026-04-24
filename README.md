@@ -1,4 +1,4 @@
-[TK from 凛として時雨「unravel」歌詞]
+#[TK from 凛として時雨「unravel」歌詞]
 
 [Intro]
 教えて 教えてよ
@@ -27,14 +27,7 @@
 無邪気に笑った記憶が刺さって
 動けない、動けない、動けない
 動けない、動けない、動けないよ
-Unravelling the world
-You might also like
-TK from 凛として時雨 (ling tosite sigure) - unravel (Romanized)
-Genius Romanizations
-TK from Ling tosite sigure - unravel (English Translation)
-Genius English Translations
-Sticky
-Tyler, The Creator
+
 [Instrumental Break]
 
 [Bridge]
